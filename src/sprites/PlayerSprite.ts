@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { COLOR_PALETTE } from "~/GameConfig";
 
 export default class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {

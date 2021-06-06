@@ -1,19 +1,29 @@
 import Phaser from "phaser";
 import FoodSprite from "~/sprites/FoodSprite";
+import GridSprite from "~/sprites/GridSprite";
 import PlayerSprite from "~/sprites/PlayerSprite";
 
 export default class GameScene extends Phaser.Scene {
   private anakonda?: PlayerSprite;
   private food?: FoodSprite;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+  private score: number = 0;
 
   constructor() {
     super("hello-world");
   }
 
-  preload() {}
+  preload() {
+    this.load.bitmapFont(
+      "clickFont",
+      "fonts/click/click_0.png",
+      "fonts/click/click.xml"
+    );
+  }
 
   create() {
+    const grid = new GridSprite(this, 0, 0, "grid");
+    let scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
     this.anakonda = new PlayerSprite(this, 50, 50, "anakonda");
     this.food = new FoodSprite(this, 100, 100, "apple");
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -21,7 +31,9 @@ export default class GameScene extends Phaser.Scene {
       this.anakonda,
       this.food,
       (anakonda, food) => {
-        food.destroy();
+        this.score += 1;
+        scoreLabel.text = `SCORE ${this.score}`;
+        this.food?.refresh();
       }
     );
   }

@@ -14,4 +14,10 @@ export default class FoodSprite extends Phaser.Physics.Arcade.Sprite {
     // it enables methods like Velocity into to the PlayerSprite
     scene.physics.add.existing(this);
   }
+
+  refresh() {
+    let x = Phaser.Math.Between(0, 50);
+    let y = Phaser.Math.Between(0, 50);
+    this.setPosition(x, y);
+  }
 }
