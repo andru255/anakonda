@@ -14,6 +14,12 @@ export const COLOR_PALETTE = {
   light1: 0xe6ceac,
 };
 
+export const GRID = {
+  WIDTH: 50,
+  HEIGHT: 50,
+  LENGTH: 50,
+};
+
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 800,

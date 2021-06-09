@@ -1,16 +1,16 @@
 import Phaser from "phaser";
 import { COLOR_PALETTE } from "~/GameConfig";
 
-export default class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
+export default class PlayerSprite {
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
     super(scene, x, y, texture);
-    this.setPosition(x, y);
+    //this.setPosition(x, y);
     this.setOrigin(0);
 
     // adds to the scene
     scene.add.existing(this);
     // it enables methods like Velocity into to the PlayerSprite
-    scene.physics.add.existing(this);
+    //scene.physics.add.existing(this);
   }
 
   preUpdate(time, delta) {

@@ -1,10 +1,10 @@
 import Phaser from "phaser";
+import { AnakondaObject } from "~/objects/Anakonda";
 import FoodSprite from "~/sprites/FoodSprite";
 import GridSprite from "~/sprites/GridSprite";
-import PlayerSprite from "~/sprites/PlayerSprite";
 
 export default class GameScene extends Phaser.Scene {
-  private anakonda?: PlayerSprite;
+  private anakonda?: AnakondaObject;
   private food?: FoodSprite;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   private score: number = 0;
@@ -24,43 +24,45 @@ export default class GameScene extends Phaser.Scene {
   create() {
     const grid = new GridSprite(this, 0, 0, "grid");
     let scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
-    this.anakonda = new PlayerSprite(this, 50, 50, "anakonda");
+
+    //anakonda setup
+    this.anakonda = new AnakondaObject(this, 50, 50);
+
     this.food = new FoodSprite(this, 100, 100, "apple");
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.physics.world.addOverlap(
-      this.anakonda,
-      this.food,
-      (anakonda, food) => {
-        this.score += 1;
-        scoreLabel.text = `SCORE ${this.score}`;
-        this.food?.refresh();
-      }
-    );
+    //this.physics.world.addOverlap(
+    //  this.anakonda,
+    //  this.food,
+    //  (anakonda, food) => {
+    //    this.score += 1;
+    //    scoreLabel.text = `SCORE ${this.score}`;
+    //    this.food?.refresh();
+    //    let sprite = this.add.sprite(400, 100, "a");
+    //    this.anakonda?.add(sprite);
+    //  }
+    //);
   }
 
-  update() {
-    if (!this.cursors) {
-      this.anakonda?.setVelocityX(0);
-    }
+  update(time) {
+    this.updateInput();
+    this.updateLogic(time);
+  }
 
-    if (this.cursors?.right.isDown) {
-      this.anakonda?.faceRight();
-      return;
-    }
-
+  updateInput() {
     if (this.cursors?.left.isDown) {
-      this.anakonda?.faceLeft();
-      return;
+      this.anakonda?.turnLeft();
     }
-
-    if (this.cursors?.up.isDown) {
-      this.anakonda?.faceTop();
-      return;
+    if (this.cursors?.right.isDown) {
+      this.anakonda?.turnRight();
     }
-
     if (this.cursors?.down.isDown) {
-      this.anakonda?.faceBottom();
-      return;
+      this.anakonda?.turnRight();
+    }
+  }
+
+  updateLogic(time) {
+    const { anakonda } = this;
+    if (anakonda?.update(time)) {
     }
   }
 }
