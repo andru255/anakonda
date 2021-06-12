@@ -1,13 +1,16 @@
 import Phaser from "phaser";
 import { AnakondaObject } from "~/objects/Anakonda";
+import FoodImageObject from "~/objects/Food";
+import Food from "~/objects/Food";
 import FoodSprite from "~/sprites/FoodSprite";
 import GridSprite from "~/sprites/GridSprite";
 
 export default class GameScene extends Phaser.Scene {
   private anakonda?: AnakondaObject;
-  private food?: FoodSprite;
+  private food?: FoodImageObject;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   private score: number = 0;
+  private points: number = 0;
 
   constructor() {
     super("hello-world");
@@ -28,7 +31,7 @@ export default class GameScene extends Phaser.Scene {
     //anakonda setup
     this.anakonda = new AnakondaObject(this, 50, 50);
 
-    this.food = new FoodSprite(this, 100, 100, "apple");
+    this.food = new Food(this, 100, 100, "apple");
     this.cursors = this.input.keyboard.createCursorKeys();
     //this.physics.world.addOverlap(
     //  this.anakonda,
@@ -55,14 +58,26 @@ export default class GameScene extends Phaser.Scene {
     if (this.cursors?.right.isDown) {
       this.anakonda?.turnRight();
     }
+    if (this.cursors?.up.isDown) {
+      this.anakonda?.turnUp();
+    }
     if (this.cursors?.down.isDown) {
-      this.anakonda?.turnRight();
+      this.anakonda?.turnDown();
     }
   }
 
   updateLogic(time) {
     const { anakonda } = this;
     if (anakonda?.update(time)) {
+      if (anakonda.collideWithFood(this.food, this.points)) {
+        this.updatePoints();
+        this.food?.reposition(anakonda);
+      }
     }
+  }
+
+  updatePoints() {
+    this.points += 5;
+    this.events.emit("food-eaten", this.points);
   }
 }

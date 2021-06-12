@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import { GRID } from "~/GameConfig";
+import { COLOR_PALETTE, GRID } from "~/GameConfig";
+import FoodGridData from "./Food";
 
 export class AnakondaObject {
   private body?: Phaser.GameObjects.Group;
@@ -19,8 +20,11 @@ export class AnakondaObject {
       createCallback: (obj) => {},
     });
     this.head = this.body.create(x, y);
+    this.head.setTintFill(COLOR_PALETTE.light4);
     this.head.setOrigin(0);
+    this.head.setDisplaySize(GRID.WIDTH, GRID.WIDTH);
     this.direction = new Phaser.Geom.Point(GRID.LENGTH, 0);
+    this.grow();
   }
 
   update(time: number) {
@@ -33,21 +37,28 @@ export class AnakondaObject {
 
   turnLeft(): void {
     if (this.updated) {
-      this.direction.setTo(this.direction.y, -this.direction.x);
+      this.direction.setTo(-GRID.WIDTH, 0);
       this.updated = false;
     }
   }
 
   turnRight(): void {
     if (this.updated) {
-      this.direction.setTo(-this.direction.y, this.direction.x);
+      this.direction.setTo(GRID.WIDTH, 0);
+      this.updated = false;
+    }
+  }
+
+  turnUp(): void {
+    if (this.updated) {
+      this.direction.setTo(0, -GRID.WIDTH);
       this.updated = false;
     }
   }
 
   turnDown(): void {
     if (this.updated) {
-      this.direction.setTo(this.direction.y, 0);
+      this.direction.setTo(0, GRID.WIDTH);
       this.updated = false;
     }
   }
@@ -80,11 +91,33 @@ export class AnakondaObject {
 
   collideWithFood(food, points): boolean {
     if (this.head?.x == food.x && this.head?.y == food.y) {
+      this.grow();
       if (this.moveDelay > 20 && points % 25 === 0) {
         this.moveDelay -= 5;
       }
       return true;
     }
     return false;
+  }
+
+  grow() {
+    let part: Phaser.GameObjects.Sprite = this.body?.create(
+      this.tailPosition.x,
+      this.tailPosition.y
+    );
+    part.setOrigin(0);
+    part.setTintFill(COLOR_PALETTE.dark2);
+    part.setDisplaySize(GRID.WIDTH, GRID.HEIGHT);
+  }
+
+  updateGrid(grid) {
+    const children = this.body?.getChildren() || [];
+    console.log("children.length", children.length);
+    for (const segment of children) {
+      const x = segment["x"] / GRID.LENGTH;
+      const y = segment["y"] / GRID.LENGTH;
+      grid[y][x] = false;
+    }
+    return grid;
   }
 }
