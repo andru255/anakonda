@@ -15,9 +15,9 @@ export const COLOR_PALETTE = {
 };
 
 export const GRID = {
-  WIDTH: 50,
-  HEIGHT: 50,
-  LENGTH: 50,
+  WIDTH: 25,
+  HEIGHT: 25,
+  LENGTH: 25,
 };
 
 export const config: Phaser.Types.Core.GameConfig = {

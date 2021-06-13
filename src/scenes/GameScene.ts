@@ -2,14 +2,13 @@ import Phaser from "phaser";
 import { AnakondaObject } from "~/objects/Anakonda";
 import FoodImageObject from "~/objects/Food";
 import Food from "~/objects/Food";
-import FoodSprite from "~/sprites/FoodSprite";
 import GridSprite from "~/sprites/GridSprite";
 
 export default class GameScene extends Phaser.Scene {
   private anakonda?: AnakondaObject;
   private food?: FoodImageObject;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
-  private score: number = 0;
+  private scoreLabel?: Phaser.GameObjects.BitmapText;
   private points: number = 0;
 
   constructor() {
@@ -26,24 +25,11 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     const grid = new GridSprite(this, 0, 0, "grid");
-    let scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
-
+    this.scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
     //anakonda setup
     this.anakonda = new AnakondaObject(this, 50, 50);
-
     this.food = new Food(this, 100, 100, "apple");
     this.cursors = this.input.keyboard.createCursorKeys();
-    //this.physics.world.addOverlap(
-    //  this.anakonda,
-    //  this.food,
-    //  (anakonda, food) => {
-    //    this.score += 1;
-    //    scoreLabel.text = `SCORE ${this.score}`;
-    //    this.food?.refresh();
-    //    let sprite = this.add.sprite(400, 100, "a");
-    //    this.anakonda?.add(sprite);
-    //  }
-    //);
   }
 
   update(time) {
@@ -68,16 +54,23 @@ export default class GameScene extends Phaser.Scene {
 
   updateLogic(time) {
     const { anakonda } = this;
-    if (anakonda?.update(time)) {
+    if (anakonda?.update(this, time)) {
       if (anakonda.collideWithFood(this.food, this.points)) {
-        this.updatePoints();
+        this.updatePoints(this.scoreLabel);
         this.food?.reposition(this, anakonda);
       }
     }
+
+    if (!anakonda?.isAlive) {
+      //show screen lose!
+      this.scene.pause();
+    }
   }
 
-  updatePoints() {
+  updatePoints(scoreLabel?: Phaser.GameObjects.BitmapText) {
     this.points += 5;
-    this.events.emit("food-eaten", this.points);
+    if (scoreLabel !== undefined) {
+      scoreLabel.text = `SCORE ${this.points}`;
+    }
   }
 }

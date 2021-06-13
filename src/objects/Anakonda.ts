@@ -9,7 +9,7 @@ export class AnakondaObject {
   private headPosition: Phaser.Geom.Point = new Phaser.Geom.Point(0, 0);
   private tailPosition = new Phaser.Math.Vector2(0, 0);
 
-  private alive: Boolean = true;
+  public isAlive: Boolean = true;
   private updated: Boolean = true;
   private moveTime: number = 0;
   private moveDelay: number = 100;
@@ -27,10 +27,10 @@ export class AnakondaObject {
     this.grow();
   }
 
-  update(time: number) {
+  update(scene: Phaser.Scene, time: number) {
     if (time >= this.moveTime) {
       this.updated = true;
-      return this.move(time);
+      return this.move(scene, time);
     }
     return false;
   }
@@ -63,19 +63,11 @@ export class AnakondaObject {
     }
   }
 
-  move(time: number): boolean {
+  move(scene: Phaser.Scene, time: number): boolean {
     // it sets the new position of the anakonda head
     this.headPosition.setTo(
-      Phaser.Math.Wrap(
-        this.head.x + this.direction.x,
-        0,
-        GRID.WIDTH * GRID.LENGTH
-      ),
-      Phaser.Math.Wrap(
-        this.head.y + this.direction.y,
-        0,
-        GRID.HEIGHT * GRID.LENGTH
-      )
+      this.head.x + this.direction.x,
+      this.head.y + this.direction.y
     );
 
     Phaser.Actions.ShiftPosition(
@@ -85,6 +77,12 @@ export class AnakondaObject {
       1,
       this.tailPosition
     );
+
+    if (this.hitBody() || this.hitEdge(scene)) {
+      this.isAlive = false;
+      return false;
+    }
+
     this.moveTime = time + this.moveDelay;
     return true;
   }
@@ -98,6 +96,21 @@ export class AnakondaObject {
       return true;
     }
     return false;
+  }
+
+  hitBody() {
+    const children = this.body?.children.entries || [];
+    return Phaser.Actions.GetFirst(
+      children,
+      { x: this.head.x, y: this.head.y },
+      1
+    );
+  }
+
+  hitEdge(scene: Phaser.Scene): boolean {
+    const { width, height } = scene.sys.game.config;
+    const { x: headX, y: headY } = this.head;
+    return headX > width || headX < 0 || headY > height || headY < 0;
   }
 
   grow() {
