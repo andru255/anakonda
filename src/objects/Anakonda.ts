@@ -12,7 +12,7 @@ export class AnakondaObject {
   private alive: Boolean = true;
   private updated: Boolean = true;
   private moveTime: number = 0;
-  private moveDelay: number = 300;
+  private moveDelay: number = 100;
 
   constructor(scene: Phaser.Scene, x, y) {
     this.body = scene.add.group({
@@ -112,11 +112,14 @@ export class AnakondaObject {
 
   updateGrid(grid) {
     const children = this.body?.getChildren() || [];
-    console.log("children.length", children.length);
     for (const segment of children) {
-      const x = segment["x"] / GRID.LENGTH;
-      const y = segment["y"] / GRID.LENGTH;
-      grid[y][x] = false;
+      const x = segment["x"] / GRID.WIDTH;
+      const y = segment["y"] / GRID.HEIGHT;
+      if (grid[y] !== undefined) {
+        if (grid[y][x] !== undefined) {
+          grid[y][x] = false;
+        }
+      }
     }
     return grid;
   }

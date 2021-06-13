@@ -71,7 +71,7 @@ export default class GameScene extends Phaser.Scene {
     if (anakonda?.update(time)) {
       if (anakonda.collideWithFood(this.food, this.points)) {
         this.updatePoints();
-        this.food?.reposition(anakonda);
+        this.food?.reposition(this, anakonda);
       }
     }
   }
