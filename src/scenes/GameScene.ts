@@ -12,7 +12,7 @@ export default class GameScene extends Phaser.Scene {
   private points: number = 0;
 
   constructor() {
-    super("hello-world");
+    super("Game");
   }
 
   preload() {

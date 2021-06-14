@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 
 import GameScene from "./scenes/GameScene";
+import LoaderScene from "./scenes/LoaderScene";
+import MenuScene from "./scenes/MenuScene";
 
 // from: https://lospec.com/palette-list/justparchment8
 export const COLOR_PALETTE = {
@@ -30,5 +32,6 @@ export const config: Phaser.Types.Core.GameConfig = {
       debug: true,
     },
   },
-  scene: [GameScene],
+  // scene: [GameScene],
+  scene: [LoaderScene, MenuScene, GameScene],
 };
