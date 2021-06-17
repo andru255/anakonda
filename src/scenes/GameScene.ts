@@ -1,34 +1,28 @@
 import Phaser from "phaser";
 import { AnakondaObject } from "~/objects/Anakonda";
 import FoodImageObject from "~/objects/Food";
-import Food from "~/objects/Food";
-import GridSprite from "~/sprites/GridSprite";
+import GroundScene from "./GroundScene";
 
 export default class GameScene extends Phaser.Scene {
   private anakonda?: AnakondaObject;
   private food?: FoodImageObject;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
-  private scoreLabel?: Phaser.GameObjects.BitmapText;
   private points: number = 0;
+  private highScore: number = 0;
 
   constructor() {
     super("Game");
   }
 
-  preload() {
-    this.load.bitmapFont(
-      "clickFont",
-      "fonts/click/click_0.png",
-      "fonts/click/click.xml"
-    );
-  }
-
   create() {
-    const grid = new GridSprite(this, 0, 0, "grid");
-    this.scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
+    const hudScene = this.scene.get("HUD");
+    const groundScene: GroundScene = this.scene.get("Ground") as GroundScene;
+
+    this.scene.launch(groundScene).launch(hudScene, { gameScene: this });
     //anakonda setup
-    this.anakonda = new AnakondaObject(this, 50, 50);
-    this.food = new Food(this, 100, 100, "apple");
+    const ground = groundScene.addGround(0, 50);
+    this.anakonda = groundScene.addPlayer(50, 50);
+    this.food = groundScene.addFood(100, 100, "apple");
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
@@ -56,21 +50,26 @@ export default class GameScene extends Phaser.Scene {
     const { anakonda } = this;
     if (anakonda?.update(this, time)) {
       if (anakonda.collideWithFood(this.food, this.points)) {
-        this.updatePoints(this.scoreLabel);
+        this.updatePoints();
         this.food?.reposition(this, anakonda);
       }
     }
 
     if (!anakonda?.isAlive) {
-      //show screen lose!
-      this.scene.pause();
+      this.endGame();
     }
   }
 
-  updatePoints(scoreLabel?: Phaser.GameObjects.BitmapText) {
+  endGame() {
+    this.events.emit("lose");
+    this.highScore = Math.max(this.points, this.highScore);
+    this.time.delayedCall(2500, () => {
+      this.scene.stop("HUD").stop("Ground").start("Menu");
+    });
+  }
+
+  updatePoints() {
     this.points += 5;
-    if (scoreLabel !== undefined) {
-      scoreLabel.text = `SCORE ${this.points}`;
-    }
+    this.events.emit("ate", this.points);
   }
 }

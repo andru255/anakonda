@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 
 export default class MenuScene extends Phaser.Scene {
+  private enterKey;
+
   constructor() {
     super({ key: "Menu" });
   }
@@ -8,6 +10,7 @@ export default class MenuScene extends Phaser.Scene {
   create() {
     const x = this.cameras.main.width / 2;
     const y = this.cameras.main.height / 2;
+    this.enterKey = this.input.keyboard.addKey("ENTER");
 
     // start button
     const startBtn = this.add
@@ -35,7 +38,11 @@ export default class MenuScene extends Phaser.Scene {
       .once("pointerup", () => {
         this.scene.start("Game");
       });
+  }
 
-    // top scores
+  update() {
+    if (this.enterKey.isDown) {
+      this.scene.start("Game");
+    }
   }
 }

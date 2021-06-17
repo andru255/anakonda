@@ -1,19 +1,21 @@
 import Phaser from "phaser";
 
 import GameScene from "./scenes/GameScene";
+import GroundScene from "./scenes/GroundScene";
+import HUDScene from "./scenes/HUDScene";
 import LoaderScene from "./scenes/LoaderScene";
 import MenuScene from "./scenes/MenuScene";
 
-// from: https://lospec.com/palette-list/justparchment8
+// from: https://lospec.com/palette-list/retrocal-8
 export const COLOR_PALETTE = {
-  dark4: 0x292418,
-  dark3: 0x524839,
-  dark2: 0x73654a,
-  dark1: 0x8b7d62,
-  light4: 0xa48d6a,
-  light3: 0xbda583,
-  light2: 0xcdba94,
-  light1: 0xe6ceac,
+  dark4: 0x2f142f,
+  dark3: 0x774448,
+  dark2: 0x2a584f,
+  dark1: 0x74a33f,
+  light4: 0x6eb8a8,
+  light3: 0xc6505a,
+  light2: 0xee9c5d,
+  light1: 0xfcffc0,
 };
 
 export const GRID = {
@@ -28,10 +30,8 @@ export const config: Phaser.Types.Core.GameConfig = {
   height: 600,
   physics: {
     default: "arcade",
-    arcade: {
-      debug: true,
-    },
   },
   // scene: [GameScene],
-  scene: [LoaderScene, MenuScene, GameScene],
+  scene: [LoaderScene, MenuScene, GameScene, HUDScene, GroundScene],
+  plugins: {},
 };
