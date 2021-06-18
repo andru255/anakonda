@@ -1,6 +1,5 @@
 import Phaser from "phaser";
-import { COLOR_PALETTE, GRID } from "~/GameConfig";
-import FoodGridData from "./Food";
+import { GRID_UNIT, COLOR_PALETTE, GROUND } from "~/GameConfig";
 
 export class AnakondaObject {
   private body?: Phaser.GameObjects.Group;
@@ -22,12 +21,15 @@ export class AnakondaObject {
     this.head = this.body.create(x, y);
     this.head.setTintFill(COLOR_PALETTE.light4);
     this.head.setOrigin(0);
-    this.head.setDisplaySize(GRID.WIDTH, GRID.WIDTH);
-    this.direction = new Phaser.Geom.Point(GRID.LENGTH, 0);
+    this.head.setDisplaySize(GRID_UNIT, GRID_UNIT);
+    this.direction = new Phaser.Geom.Point(GRID_UNIT, 0);
     this.grow();
   }
 
   update(scene: Phaser.Scene, time: number) {
+    if (!this.isAlive) {
+      return false;
+    }
     if (time >= this.moveTime) {
       this.updated = true;
       return this.move(scene, time);
@@ -37,28 +39,28 @@ export class AnakondaObject {
 
   turnLeft(): void {
     if (this.updated) {
-      this.direction.setTo(-GRID.WIDTH, 0);
+      this.direction.setTo(-GRID_UNIT, 0);
       this.updated = false;
     }
   }
 
   turnRight(): void {
     if (this.updated) {
-      this.direction.setTo(GRID.WIDTH, 0);
+      this.direction.setTo(GRID_UNIT, 0);
       this.updated = false;
     }
   }
 
   turnUp(): void {
     if (this.updated) {
-      this.direction.setTo(0, -GRID.WIDTH);
+      this.direction.setTo(0, -GRID_UNIT);
       this.updated = false;
     }
   }
 
   turnDown(): void {
     if (this.updated) {
-      this.direction.setTo(0, GRID.WIDTH);
+      this.direction.setTo(0, GRID_UNIT);
       this.updated = false;
     }
   }
@@ -109,8 +111,19 @@ export class AnakondaObject {
 
   hitEdge(scene: Phaser.Scene): boolean {
     const { width, height } = scene.sys.game.config;
+    const edges = {
+      top: GROUND.Y,
+      left: GROUND.X,
+      right: GROUND.X + GROUND.WIDTH - GRID_UNIT,
+      bottom: GROUND.HEIGHT + GROUND.Y - GRID_UNIT,
+    };
     const { x: headX, y: headY } = this.head;
-    return headX > width || headX < 0 || headY > height || headY < 0;
+    return (
+      headX > edges.right ||
+      headX < edges.left ||
+      headY > edges.bottom ||
+      headY < edges.top
+    );
   }
 
   grow() {
@@ -120,14 +133,14 @@ export class AnakondaObject {
     );
     part.setOrigin(0);
     part.setTintFill(COLOR_PALETTE.dark2);
-    part.setDisplaySize(GRID.WIDTH, GRID.HEIGHT);
+    part.setDisplaySize(GRID_UNIT, GRID_UNIT);
   }
 
   updateGrid(grid) {
     const children = this.body?.getChildren() || [];
     for (const segment of children) {
-      const x = segment["x"] / GRID.WIDTH;
-      const y = segment["y"] / GRID.HEIGHT;
+      const x = segment["x"] / GRID_UNIT - GROUND.X / GRID_UNIT;
+      const y = segment["y"] / GRID_UNIT - GROUND.Y / GRID_UNIT;
       if (grid[y] !== undefined) {
         if (grid[y][x] !== undefined) {
           grid[y][x] = false;

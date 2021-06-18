@@ -1,18 +1,17 @@
 import Phaser from "phaser";
-import { GRID } from "~/GameConfig";
+import { GRID_UNIT, GROUND } from "~/GameConfig";
 
 export default class GridSprite extends Phaser.GameObjects.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
     super(scene, x, y, texture);
-    const { width, height } = scene.sys.game.config;
     const grid = scene.add
       .grid(
-        x,
-        y,
-        width as number,
-        height as number,
-        GRID.WIDTH,
-        GRID.HEIGHT,
+        GROUND.X,
+        GROUND.Y,
+        GROUND.WIDTH,
+        GROUND.HEIGHT,
+        GRID_UNIT,
+        GRID_UNIT,
         0xe6ceac
       )
       .setAltFillStyle(0xcdba94);

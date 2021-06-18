@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { COLOR_PALETTE } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT } from "~/GameConfig";
 
 export default class HUDScene extends Phaser.Scene {
   private scoreLabel?: Phaser.GameObjects.BitmapText;
@@ -21,7 +21,13 @@ export default class HUDScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
-    this.scoreLabel = this.add.bitmapText(10, 5, "clickFont", "SCORE", 28);
+    this.scoreLabel = this.add.bitmapText(
+      GRID_UNIT,
+      GRID_UNIT / 2,
+      "clickFont",
+      "SCORE",
+      GRID_UNIT
+    );
     this.gameOverLabel = this.add
       .bitmapText(100, 100, "clickFont", "GAME OVER", 40)
       .setOrigin(0, 0)

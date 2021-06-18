@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GRID_UNIT, GROUND } from "~/GameConfig";
 import { AnakondaObject } from "~/objects/Anakonda";
 import FoodImageObject from "~/objects/Food";
 import GroundScene from "./GroundScene";
@@ -20,9 +21,14 @@ export default class GameScene extends Phaser.Scene {
 
     this.scene.launch(groundScene).launch(hudScene, { gameScene: this });
     //anakonda setup
-    const ground = groundScene.addGround(0, 50);
-    this.anakonda = groundScene.addPlayer(50, 50);
-    this.food = groundScene.addFood(100, 100, "apple");
+    //const ground = groundScene.addGround(0, 0);
+    groundScene.addBorders(0, 0);
+    this.anakonda = groundScene.addPlayer(
+      GROUND.X + GRID_UNIT * 3,
+      GROUND.Y + GRID_UNIT * 3
+    );
+    this.food = groundScene.addFood(GRID_UNIT, GRID_UNIT, "apple");
+    this.food.reposition(this, this.anakonda);
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
@@ -61,6 +67,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   endGame() {
+    this.scene.pause("Ground");
     this.events.emit("lose");
     this.highScore = Math.max(this.points, this.highScore);
     this.time.delayedCall(2500, () => {

@@ -18,10 +18,13 @@ export const COLOR_PALETTE = {
   light1: 0xfcffc0,
 };
 
-export const GRID = {
-  WIDTH: 25,
-  HEIGHT: 25,
-  LENGTH: 25,
+export const GRID_UNIT = 25;
+
+export const GROUND = {
+  X: GRID_UNIT * 2,
+  Y: GRID_UNIT * 3,
+  WIDTH: GRID_UNIT * 28,
+  HEIGHT: GRID_UNIT * 19,
 };
 
 export const config: Phaser.Types.Core.GameConfig = {

@@ -1,19 +1,18 @@
-import { GRID } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT, GROUND } from "~/GameConfig";
 import { AnakondaObject } from "./Anakonda";
 
 export default class FoodImageObject extends Phaser.GameObjects.Image {
   constructor(scene: Phaser.Scene, x, y, texture) {
     super(scene, x, y, texture);
     this.setOrigin(0);
-    this.setDisplaySize(GRID.WIDTH, GRID.HEIGHT);
+    this.setDisplaySize(GRID_UNIT, GRID_UNIT);
+    this.setTintFill(COLOR_PALETTE.light3);
     scene.children.add(this);
   }
 
   reposition(scene: Phaser.Scene, anakonda: AnakondaObject) {
-    const { HEIGHT, WIDTH, LENGTH } = GRID;
-    const { width, height } = scene.sys.game.config;
-    const numOfCellsY = (height as number) / HEIGHT;
-    const numOfCellsX = (width as number) / WIDTH;
+    const numOfCellsY = GROUND.HEIGHT / GRID_UNIT;
+    const numOfCellsX = GROUND.WIDTH / GRID_UNIT;
 
     const testGrid = Array.from({ length: numOfCellsY }, () =>
       Array.from({ length: numOfCellsX }, () => true)
@@ -25,10 +24,6 @@ export default class FoodImageObject extends Phaser.GameObjects.Image {
 
     for (let y = 0; y < numOfCellsY; y++) {
       for (let x = 0; x < numOfCellsX; x++) {
-        try {
-        } catch (err) {
-          console.error(x, y);
-        }
         if (testGrid[y][x] === true) {
           validLocations.push({ x, y });
         }
@@ -37,7 +32,10 @@ export default class FoodImageObject extends Phaser.GameObjects.Image {
 
     if (validLocations.length > 0) {
       let pos = Phaser.Math.RND.pick(validLocations);
-      this.setPosition(pos.x * GRID.WIDTH, pos.y * GRID.HEIGHT);
+      this.setPosition(
+        pos.x * GRID_UNIT + GROUND.X,
+        pos.y * GRID_UNIT + GROUND.Y
+      );
       return true;
     }
     return false;
