@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { COLOR_PALETTE } from "~/GameConfig";
 
 export default class MenuScene extends Phaser.Scene {
   private enterKey;
@@ -8,6 +9,7 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
     const x = this.cameras.main.width / 2;
     const y = this.cameras.main.height / 2;
     this.enterKey = this.input.keyboard.addKey("ENTER");

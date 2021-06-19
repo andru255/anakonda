@@ -20,7 +20,6 @@ export default class HUDScene extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
     this.scoreLabel = this.add.bitmapText(
       GRID_UNIT,
       GRID_UNIT / 2,

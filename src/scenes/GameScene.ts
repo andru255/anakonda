@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GRID_UNIT, GROUND } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT, GROUND } from "~/GameConfig";
 import { AnakondaObject } from "~/objects/Anakonda";
 import FoodImageObject from "~/objects/Food";
 import GroundScene from "./GroundScene";
@@ -16,6 +16,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
+
     const hudScene = this.scene.get("HUD");
     const groundScene: GroundScene = this.scene.get("Ground") as GroundScene;
 

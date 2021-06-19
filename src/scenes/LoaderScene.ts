@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { COLOR_PALETTE } from "~/GameConfig";
 
 export default class LoaderScene extends Phaser.Scene {
   constructor() {
