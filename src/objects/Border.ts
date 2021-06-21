@@ -17,15 +17,12 @@ export class BorderObject {
     // TOP
     this.borderPiece = this.body?.create(GROUND.X, GROUND.Y - GRID_UNIT);
     this.borderPiece?.setOrigin(0);
-    this.borderPiece?.setDisplaySize(GROUND.WIDTH, GRID_UNIT / 2);
+    this.borderPiece?.setDisplaySize(GROUND.WIDTH, GRID_UNIT);
     this.borderPiece?.setTintFill(COLOR_PALETTE.dark2);
     // BOTTOM
-    this.borderPiece = this.body?.create(
-      GROUND.X,
-      GROUND.Y + GROUND.HEIGHT + GRID_UNIT / 2
-    );
+    this.borderPiece = this.body?.create(GROUND.X, GROUND.Y + GROUND.HEIGHT);
     this.borderPiece?.setOrigin(0);
-    this.borderPiece?.setDisplaySize(GROUND.WIDTH, GRID_UNIT / 2);
+    this.borderPiece?.setDisplaySize(GROUND.WIDTH, GRID_UNIT);
     this.borderPiece?.setTintFill(COLOR_PALETTE.dark2);
     // LEFT
     this.borderPiece = this.body?.create(
@@ -33,21 +30,15 @@ export class BorderObject {
       GROUND.Y - GRID_UNIT
     );
     this.borderPiece?.setOrigin(0);
-    this.borderPiece?.setDisplaySize(
-      GRID_UNIT / 2,
-      GROUND.HEIGHT + GRID_UNIT * 2
-    );
+    this.borderPiece?.setDisplaySize(GRID_UNIT, GROUND.HEIGHT + GRID_UNIT * 2);
     this.borderPiece?.setTintFill(COLOR_PALETTE.dark2);
     // RIGHT
     this.borderPiece = this.body?.create(
-      GROUND.WIDTH + GRID_UNIT * 2 + GRID_UNIT / 2,
+      GROUND.WIDTH + GRID_UNIT * 2,
       GROUND.Y - GRID_UNIT
     );
     this.borderPiece?.setOrigin(0);
-    this.borderPiece?.setDisplaySize(
-      GRID_UNIT / 2,
-      GROUND.HEIGHT + GRID_UNIT * 2
-    );
+    this.borderPiece?.setDisplaySize(GRID_UNIT, GROUND.HEIGHT + GRID_UNIT * 2);
     this.borderPiece?.setTintFill(COLOR_PALETTE.dark2);
   }
 }

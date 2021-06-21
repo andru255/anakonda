@@ -19,7 +19,7 @@ export class AnakondaObject {
       createCallback: (obj) => {},
     });
     this.head = this.body.create(x, y);
-    this.head.setTintFill(COLOR_PALETTE.light4);
+    this.head.setTintFill(COLOR_PALETTE.dark2);
     this.head.setOrigin(0);
     this.head.setDisplaySize(GRID_UNIT, GRID_UNIT);
     this.direction = new Phaser.Geom.Point(GRID_UNIT, 0);

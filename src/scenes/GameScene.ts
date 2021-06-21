@@ -11,6 +11,10 @@ export default class GameScene extends Phaser.Scene {
   private points: number = 0;
   private highScore: number = 0;
 
+  private eatSound?: Phaser.Sound.BaseSound;
+  private dieSound?: Phaser.Sound.BaseSound;
+  private isEnabledDieSound: boolean = true;
+
   constructor() {
     super("Game");
   }
@@ -18,10 +22,17 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
 
+    this.eatSound = this.sound.add("eat");
+    this.dieSound = this.sound.add("die");
+
     const hudScene = this.scene.get("HUD");
+    const gameOverScene = this.scene.get("GameOver");
     const groundScene: GroundScene = this.scene.get("Ground") as GroundScene;
 
-    this.scene.launch(groundScene).launch(hudScene, { gameScene: this });
+    this.scene
+      .launch(groundScene)
+      .launch(hudScene, { gameScene: this })
+      .launch(gameOverScene, { gameScene: this });
     //anakonda setup
     //const ground = groundScene.addGround(0, 0);
     groundScene.addBorders(0, 0);
@@ -57,9 +68,11 @@ export default class GameScene extends Phaser.Scene {
   updateLogic(time) {
     const { anakonda } = this;
     if (anakonda?.update(this, time)) {
+      this.isEnabledDieSound = true;
       if (anakonda.collideWithFood(this.food, this.points)) {
         this.updatePoints();
         this.food?.reposition(this, anakonda);
+        this.eatSound?.play();
       }
     }
 
@@ -69,11 +82,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   endGame() {
+    if (this.isEnabledDieSound) {
+      this.dieSound?.play();
+      this.isEnabledDieSound = false;
+    }
     this.scene.pause("Ground");
     this.events.emit("lose");
     this.highScore = Math.max(this.points, this.highScore);
-    this.time.delayedCall(2500, () => {
-      this.scene.stop("HUD").stop("Ground").start("Menu");
+    this.time.delayedCall(2300, () => {
+      this.scene.stop("HUD").stop("GameOver").stop("Ground").start("Menu");
     });
   }
 

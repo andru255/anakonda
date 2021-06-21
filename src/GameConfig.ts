@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import GameOverScene from "./scenes/GameOverScene";
 
 import GameScene from "./scenes/GameScene";
 import GroundScene from "./scenes/GroundScene";
@@ -34,7 +35,13 @@ export const config: Phaser.Types.Core.GameConfig = {
   physics: {
     default: "arcade",
   },
-  // scene: [GameScene],
-  scene: [LoaderScene, MenuScene, GameScene, HUDScene, GroundScene],
+  scene: [
+    LoaderScene,
+    MenuScene,
+    GameScene,
+    HUDScene,
+    GroundScene,
+    GameOverScene,
+  ],
   plugins: {},
 };
