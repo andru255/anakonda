@@ -34,7 +34,7 @@ export default class GameScene extends Phaser.Scene {
       .launch(hudScene, { gameScene: this })
       .launch(gameOverScene, { gameScene: this });
     //anakonda setup
-    //const ground = groundScene.addGround(0, 0);
+    const ground = groundScene.addGround(0, 0);
     groundScene.addBorders(0, 0);
     this.anakonda = groundScene.addPlayer(
       GROUND.X + GRID_UNIT * 3,

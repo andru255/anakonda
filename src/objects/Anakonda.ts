@@ -5,6 +5,7 @@ export class AnakondaObject {
   private body?: Phaser.GameObjects.Group;
   private head: Phaser.GameObjects.Sprite;
   private direction: Phaser.Geom.Point;
+  private rotation: number = 0;
   private headPosition: Phaser.Geom.Point = new Phaser.Geom.Point(0, 0);
   private tailPosition = new Phaser.Math.Vector2(0, 0);
 
@@ -18,9 +19,12 @@ export class AnakondaObject {
       defaultKey: "anakondaBody",
       createCallback: (obj) => {},
     });
-    this.head = this.body.create(x, y);
+    this.head = this.body.create(
+      x - GRID_UNIT / 2,
+      y - GRID_UNIT / 2,
+      "headPart"
+    );
     this.head.setTintFill(COLOR_PALETTE.dark2);
-    this.head.setOrigin(0);
     this.head.setDisplaySize(GRID_UNIT, GRID_UNIT);
     this.direction = new Phaser.Geom.Point(GRID_UNIT, 0);
     this.grow();
@@ -40,6 +44,7 @@ export class AnakondaObject {
   turnLeft(): void {
     if (this.updated) {
       this.direction.setTo(-GRID_UNIT, 0);
+      this.rotation = 180;
       this.updated = false;
     }
   }
@@ -47,6 +52,7 @@ export class AnakondaObject {
   turnRight(): void {
     if (this.updated) {
       this.direction.setTo(GRID_UNIT, 0);
+      this.rotation = 0;
       this.updated = false;
     }
   }
@@ -54,6 +60,7 @@ export class AnakondaObject {
   turnUp(): void {
     if (this.updated) {
       this.direction.setTo(0, -GRID_UNIT);
+      this.rotation = -90;
       this.updated = false;
     }
   }
@@ -61,6 +68,7 @@ export class AnakondaObject {
   turnDown(): void {
     if (this.updated) {
       this.direction.setTo(0, GRID_UNIT);
+      this.rotation = 90;
       this.updated = false;
     }
   }
@@ -71,6 +79,7 @@ export class AnakondaObject {
       this.head.x + this.direction.x,
       this.head.y + this.direction.y
     );
+    this.head.rotation = (this.rotation * Math.PI) / 180;
 
     Phaser.Actions.ShiftPosition(
       this.body?.children.entries || [],
@@ -114,8 +123,8 @@ export class AnakondaObject {
     const edges = {
       top: GROUND.Y,
       left: GROUND.X,
-      right: GROUND.X + GROUND.WIDTH - GRID_UNIT,
-      bottom: GROUND.HEIGHT + GROUND.Y - GRID_UNIT,
+      right: GROUND.X + GROUND.WIDTH - GRID_UNIT / 2,
+      bottom: GROUND.HEIGHT + GROUND.Y - GRID_UNIT / 2,
     };
     const { x: headX, y: headY } = this.head;
     return (
@@ -129,10 +138,9 @@ export class AnakondaObject {
   grow() {
     let part: Phaser.GameObjects.Sprite = this.body?.create(
       this.tailPosition.x,
-      this.tailPosition.y
+      this.tailPosition.y,
+      "bodyPart"
     );
-    part.setOrigin(0);
-    part.setTintFill(COLOR_PALETTE.dark2);
     part.setDisplaySize(GRID_UNIT, GRID_UNIT);
   }
 

@@ -4,7 +4,6 @@ import { AnakondaObject } from "./Anakonda";
 export default class FoodImageObject extends Phaser.GameObjects.Image {
   constructor(scene: Phaser.Scene, x, y, texture) {
     super(scene, x, y, texture);
-    this.setOrigin(0);
     this.setDisplaySize(GRID_UNIT, GRID_UNIT);
     this.setTintFill(COLOR_PALETTE.light3);
     scene.children.add(this);
@@ -33,11 +32,29 @@ export default class FoodImageObject extends Phaser.GameObjects.Image {
     if (validLocations.length > 0) {
       let pos = Phaser.Math.RND.pick(validLocations);
       this.setPosition(
-        pos.x * GRID_UNIT + GROUND.X,
-        pos.y * GRID_UNIT + GROUND.Y
+        pos.x * GRID_UNIT + GROUND.X + GRID_UNIT / 2,
+        pos.y * GRID_UNIT + GROUND.Y + GRID_UNIT / 2
       );
+      //test all positions
+      // this.renderValidLocations(scene, validLocations);
+
       return true;
     }
     return false;
+  }
+
+  private renderValidLocations(scene: Phaser.Scene, validLocations: any[]) {
+    const body = scene.add.group({
+      defaultKey: "testFoodGroup",
+      createCallback: () => {},
+    });
+    validLocations.forEach((location) => {
+      const foodTest = body.create(
+        location.x * GRID_UNIT + GROUND.X + GRID_UNIT / 2,
+        location.y * GRID_UNIT + GROUND.Y + GRID_UNIT / 2
+      ) as Phaser.GameObjects.Sprite;
+      foodTest.setDisplaySize(GRID_UNIT, GRID_UNIT);
+      foodTest.setTintFill(COLOR_PALETTE.dark3);
+    });
   }
 }

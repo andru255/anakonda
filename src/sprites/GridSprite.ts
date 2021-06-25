@@ -14,9 +14,9 @@ export default class GridSprite extends Phaser.GameObjects.Sprite {
         GRID_UNIT,
         0xe6ceac
       )
-      .setAltFillStyle(0xcdba94);
+      .setAltFillStyle(0xcdba94)
+      .setOutlineStyle();
+    grid.setAlpha(0.3);
     grid.setOrigin(0);
-    // adds to the scene
-    scene.add.existing(this);
   }
 }
