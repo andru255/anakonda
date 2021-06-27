@@ -141,6 +141,7 @@ export class AnakondaObject {
       this.tailPosition.y,
       "bodyPart"
     );
+    part.setTintFill(COLOR_PALETTE.dark2);
     part.setDisplaySize(GRID_UNIT, GRID_UNIT);
   }
 

@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { COLOR_PALETTE } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT, GROUND } from "~/GameConfig";
 
 export default class MenuScene extends Phaser.Scene {
   private enterKey;
@@ -10,15 +10,29 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
-    const x = this.cameras.main.width / 2;
-    const y = this.cameras.main.height / 2;
+    const x = GRID_UNIT * 10;
+    const y = GRID_UNIT * 10;
+
+    let mainTitleText = this.add.text(
+      GRID_UNIT * 4,
+      GRID_UNIT * 5,
+      "ANAKONDA",
+      {
+        font: "82px Berkelium",
+      }
+    );
+
     this.enterKey = this.input.keyboard.addKey("ENTER");
 
-    // start button
-    const startBtn = this.add
-      .bitmapText(x, y, "clickFont", "NEW GAME")
-      .setOrigin(0.5, 1);
-    startBtn.setScale(2);
+    // start button 2
+    const startBtn = this.add.text(
+      GRID_UNIT * 11,
+      GRID_UNIT * 12,
+      "START GAME!",
+      {
+        font: "28px Berkelium",
+      }
+    );
 
     this.add.tween({
       targets: [startBtn],

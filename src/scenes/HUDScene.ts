@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { COLOR_PALETTE, GRID_UNIT } from "~/GameConfig";
 
 export default class HUDScene extends Phaser.Scene {
-  private scoreLabel?: Phaser.GameObjects.BitmapText;
+  private scoreLabel?: Phaser.GameObjects.Text;
 
   constructor() {
     super({
@@ -15,13 +15,9 @@ export default class HUDScene extends Phaser.Scene {
   }
 
   create() {
-    this.scoreLabel = this.add.bitmapText(
-      GRID_UNIT,
-      GRID_UNIT / 2,
-      "clickFont",
-      "SCORE",
-      GRID_UNIT
-    );
+    this.scoreLabel = this.add.text(GRID_UNIT, GRID_UNIT / 2, "SCORE", {
+      font: "28px Berkelium",
+    });
   }
 
   private setScore(value = 0) {

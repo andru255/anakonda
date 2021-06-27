@@ -40,7 +40,7 @@ export default class GameScene extends Phaser.Scene {
       GROUND.X + GRID_UNIT * 3,
       GROUND.Y + GRID_UNIT * 3
     );
-    this.food = groundScene.addFood(GRID_UNIT, GRID_UNIT, "apple");
+    this.food = groundScene.addFood(GRID_UNIT, GRID_UNIT, "food");
     this.food.reposition(this, this.anakonda);
     this.cursors = this.input.keyboard.createCursorKeys();
   }

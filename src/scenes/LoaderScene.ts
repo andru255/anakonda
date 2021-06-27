@@ -9,16 +9,15 @@ export default class LoaderScene extends Phaser.Scene {
   constructor() {
     super({ key: "Loader" });
   }
+
   preload() {
-    this.load.bitmapFont(
-      "clickFont",
-      "fonts/click/click_0.png",
-      "fonts/click/click.xml"
-    );
+    // audios
     this.load.audio("eat", ["sounds/eat.mp3", "sounds/eat.ogg"]);
     this.load.audio("die", ["sounds/die.mp3", "sounds/die.ogg"]);
-    this.load.image("bodyPart", "sprites/anakonda-body-part.png");
+    // images
+    this.load.image("bodyPart", "sprites/anakonda-body-part-alpha.png");
     this.load.image("headPart", "sprites/anakonda-head-alpha.png");
+    this.load.image("food", "sprites/food.png");
   }
 
   create() {

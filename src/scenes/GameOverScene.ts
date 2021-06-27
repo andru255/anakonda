@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { GRID_UNIT, GROUND } from "~/GameConfig";
 
 export default class GameOverScene extends Phaser.Scene {
-  private gameOverLabel?: Phaser.GameObjects.BitmapText;
+  private gameOverLabel?: Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: "GameOver" });
@@ -16,13 +16,9 @@ export default class GameOverScene extends Phaser.Scene {
 
   create() {
     this.gameOverLabel = this.add
-      .bitmapText(
-        GROUND.WIDTH / 2 - GRID_UNIT * 2,
-        GROUND.HEIGHT / 2,
-        "clickFont",
-        "GAME OVER",
-        GRID_UNIT * 2
-      )
+      .text(GROUND.WIDTH / 2 - GRID_UNIT * 2, GROUND.HEIGHT / 2, "GAME OVER", {
+        font: "28px Berkelium",
+      })
       .setOrigin(0, 0)
       .setVisible(false);
   }
