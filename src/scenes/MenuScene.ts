@@ -24,7 +24,7 @@ export default class MenuScene extends Phaser.Scene {
 
     this.enterKey = this.input.keyboard.addKey("ENTER");
 
-    // start button 2
+    // start game button
     const startBtn = this.add.text(
       GRID_UNIT * 11,
       GRID_UNIT * 12,
@@ -34,6 +34,10 @@ export default class MenuScene extends Phaser.Scene {
       }
     );
 
+    const options = this.add.text(GRID_UNIT * 11, GRID_UNIT * 15, "OPTIONS", {
+      font: "28px Berkelium",
+    });
+
     this.add.tween({
       targets: [startBtn],
       ease: (k) => (k < 0.5 ? 0 : 1),
@@ -41,6 +45,9 @@ export default class MenuScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
+
+    const zoneStartGame = this.add.sprite(10, 10, "");
+    zoneStartGame.setTintFill(COLOR_PALETTE.light2);
 
     this.add
       .zone(
