@@ -25,7 +25,7 @@ export const GROUND = {
   X: GRID_UNIT * 2,
   Y: GRID_UNIT * 3,
   WIDTH: GRID_UNIT * 28,
-  HEIGHT: GRID_UNIT * 19,
+  HEIGHT: GRID_UNIT * 17,
 };
 
 export const config: Phaser.Types.Core.GameConfig = {

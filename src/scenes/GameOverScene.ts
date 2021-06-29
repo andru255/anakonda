@@ -16,8 +16,8 @@ export default class GameOverScene extends Phaser.Scene {
 
   create() {
     this.gameOverLabel = this.add
-      .text(GROUND.WIDTH / 2 - GRID_UNIT * 2, GROUND.HEIGHT / 2, "GAME OVER", {
-        font: "28px Berkelium",
+      .text(GROUND.WIDTH / 2 - GRID_UNIT * 5, GROUND.HEIGHT / 2, "GAME OVER", {
+        font: "48px Berkelium",
       })
       .setOrigin(0, 0)
       .setVisible(false);
