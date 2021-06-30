@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import { COLOR_PALETTE, GRID_UNIT, GROUND } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT, GROUND, STORAGE_NAME } from "~/GameConfig";
+import ScoreService from "~/services/scoreService";
 
 export default class HUDScene extends Phaser.Scene {
   private scoreLabel?: Phaser.GameObjects.Text;

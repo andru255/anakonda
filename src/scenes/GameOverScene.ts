@@ -1,16 +1,19 @@
 import Phaser from "phaser";
-import { GRID_UNIT, GROUND } from "~/GameConfig";
+import { GRID_UNIT, GROUND, STORAGE_NAME } from "~/GameConfig";
+import ScoreService from "~/services/scoreService";
 
 export default class GameOverScene extends Phaser.Scene {
   private gameOverLabel?: Phaser.GameObjects.Text;
 
+  private scoreService = new ScoreService(STORAGE_NAME);
   constructor() {
     super({ key: "GameOver" });
   }
 
   init({ gameScene }: { gameScene: Phaser.Scene }) {
-    gameScene.events.on("lose", () => {
+    gameScene.events.once("lose", (score) => {
       this.showGameOver();
+      this.scoreService.saveScore(score);
     });
   }
 

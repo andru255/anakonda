@@ -9,7 +9,6 @@ export default class GameScene extends Phaser.Scene {
   private food?: FoodImageObject;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   private points: number = 0;
-  private highScore: number = 0;
 
   private eatSound?: Phaser.Sound.BaseSound;
   private dieSound?: Phaser.Sound.BaseSound;
@@ -20,6 +19,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.points = 0;
     this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
 
     this.eatSound = this.sound.add("eat");
@@ -87,8 +87,7 @@ export default class GameScene extends Phaser.Scene {
       this.isEnabledDieSound = false;
     }
     this.scene.pause("Ground");
-    this.events.emit("lose");
-    this.highScore = Math.max(this.points, this.highScore);
+    this.events.emit("lose", this.points);
     this.time.delayedCall(2300, () => {
       this.scene.stop("HUD").stop("GameOver").stop("Ground").start("Menu");
     });

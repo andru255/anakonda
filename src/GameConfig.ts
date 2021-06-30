@@ -3,6 +3,7 @@ import GameOverScene from "./scenes/GameOverScene";
 
 import GameScene from "./scenes/GameScene";
 import GroundScene from "./scenes/GroundScene";
+import HighScoreScene from "./scenes/HighScoresScene";
 import HUDScene from "./scenes/HUDScene";
 import LoaderScene from "./scenes/LoaderScene";
 import MenuScene from "./scenes/MenuScene";
@@ -28,6 +29,8 @@ export const GROUND = {
   HEIGHT: GRID_UNIT * 17,
 };
 
+export const STORAGE_NAME = "anakonda-score";
+
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 800,
@@ -38,6 +41,7 @@ export const config: Phaser.Types.Core.GameConfig = {
   scene: [
     LoaderScene,
     MenuScene,
+    HighScoreScene,
     GameScene,
     HUDScene,
     GroundScene,

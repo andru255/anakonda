@@ -1,62 +1,62 @@
 import Phaser from "phaser";
-import { COLOR_PALETTE, GRID_UNIT, GROUND } from "~/GameConfig";
+import { COLOR_PALETTE, GRID_UNIT, STORAGE_NAME } from "~/GameConfig";
+import ScoreService from "~/services/scoreService";
+import { MenuOption } from "./MenuScene";
 
-export interface MenuOption {
-  x: number;
-  y: number;
-  text: string;
-  callback: () => void;
-}
-export default class MenuScene extends Phaser.Scene {
+export default class HighScoreScene extends Phaser.Scene {
   private iconAside?: Phaser.GameObjects.Sprite;
   private currentOptionIndex;
-
-  private enterKey?: Phaser.Input.Keyboard.Key;
-  private upKey?: Phaser.Input.Keyboard.Key;
-  private downKey?: Phaser.Input.Keyboard.Key;
-
   private menuOptions: MenuOption[] = [];
 
+  private enterKey?: Phaser.Input.Keyboard.Key;
+  private scoreService = new ScoreService(STORAGE_NAME);
+
   constructor() {
-    super({ key: "Menu" });
+    super({ key: "HighScore" });
   }
 
   create() {
-    this.currentOptionIndex = 0;
-    this.menuOptions = [
-      {
-        x: GRID_UNIT * 11,
-        y: GRID_UNIT * 12,
-        text: "START GAME!",
-        callback: () => {
-          this.scene.start("Game");
-        },
-      },
-      {
-        x: GRID_UNIT * 11,
-        y: GRID_UNIT * 15,
-        text: "HALL OF FAME",
-        callback: () => {
-          this.scene.start("HighScore");
-        },
-      },
-    ];
-
+    this.currentOptionIndex = 3;
     this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
-
-    this.iconAside = this.add.sprite(
-      GRID_UNIT * 10,
-      this.menuOptions[0].y + GRID_UNIT / 2,
-      "food"
-    );
-
     this.add.text(GRID_UNIT * 4, GRID_UNIT * 5, "ANAKONDA", {
       font: "82px Berkelium",
     });
-
     this.enterKey = this.input.keyboard.addKey("ENTER");
-    this.upKey = this.input.keyboard.addKey("UP");
-    this.downKey = this.input.keyboard.addKey("DOWN");
+    const highScores = this.scoreService.getHighScores();
+
+    this.menuOptions = [
+      {
+        x: GRID_UNIT * 13,
+        y: GRID_UNIT * 10,
+        text: `1ST ${highScores[0]}`,
+        callback: () => {},
+      },
+      {
+        x: GRID_UNIT * 13,
+        y: GRID_UNIT * 12,
+        text: `2ND ${highScores[1]}`,
+        callback: () => {},
+      },
+      {
+        x: GRID_UNIT * 13,
+        y: GRID_UNIT * 14,
+        text: `3RD ${highScores[2]}`,
+        callback: () => {},
+      },
+      {
+        x: GRID_UNIT * 8,
+        y: GRID_UNIT * 16,
+        text: "BACK TO MAIN MENU",
+        callback: () => {
+          this.scene.start("Menu");
+        },
+      },
+    ];
+    this.iconAside = this.add.sprite(
+      GRID_UNIT * 7,
+      this.menuOptions[this.currentOptionIndex].y + GRID_UNIT / 2,
+      "food"
+    );
 
     // rendering buttons
     this.menuOptions.forEach((option, index) => {
@@ -67,14 +67,6 @@ export default class MenuScene extends Phaser.Scene {
   update() {
     if (this.enterKey?.isDown) {
       this.menuOptions[this.currentOptionIndex].callback();
-    }
-
-    if (this.upKey?.isDown) {
-      this.goToOption(0);
-    }
-
-    if (this.downKey?.isDown) {
-      this.goToOption(1);
     }
   }
 
@@ -106,7 +98,6 @@ export default class MenuScene extends Phaser.Scene {
 
   private goToOption(indexOption: number) {
     const y = this.menuOptions[indexOption].y + GRID_UNIT / 2;
-    this.iconAside?.setY(y);
     this.currentOptionIndex = indexOption;
   }
 }
