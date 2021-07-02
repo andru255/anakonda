@@ -20,9 +20,18 @@ export default class LoaderScene extends Phaser.Scene {
     this.load.image("food", "sprites/food.png");
   }
 
-  create() {
+  create(data: { fadeIn: boolean }) {
     // It needs to start
-    this.scene.start("Menu");
+    this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
+    if (data.fadeIn) {
+      this.cameras.main.fadeIn(700, 0, 0, 0);
+      this.cameras.main.once(
+        Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE,
+        () => {
+          this.scene.start("Menu");
+        }
+      );
+    }
     /** just for fun **/
     // this.cameras.main.setBackgroundColor(COLOR_PALETTE.dark1);
     // this.boxDemo = this.add.sprite(GRID_UNIT, GRID_UNIT, "headPart");

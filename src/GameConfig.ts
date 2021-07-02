@@ -6,6 +6,7 @@ import GroundScene from "./scenes/GroundScene";
 import HighScoreScene from "./scenes/HighScoresScene";
 import HUDScene from "./scenes/HUDScene";
 import LoaderScene from "./scenes/LoaderScene";
+import LogoScene from "./scenes/LogoScene";
 import MenuScene from "./scenes/MenuScene";
 
 // from: https://lospec.com/palette-list/retrocal-8
@@ -39,6 +40,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     default: "arcade",
   },
   scene: [
+    LogoScene,
     LoaderScene,
     MenuScene,
     HighScoreScene,
