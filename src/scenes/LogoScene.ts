@@ -17,7 +17,10 @@ export default class GameScene extends Phaser.Scene {
       .setTintFill(COLOR_PALETTE.light1)
       .setScale(2);
 
-    this.hideAndContinue();
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+    this.time.delayedCall(1300, () => {
+      this.hideAndContinue(300);
+    });
 
     this.input.keyboard.once("keydown-SPACE", () => {
       this.hideAndContinue(500);

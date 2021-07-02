@@ -8,6 +8,7 @@ import HUDScene from "./scenes/HUDScene";
 import LoaderScene from "./scenes/LoaderScene";
 import LogoScene from "./scenes/LogoScene";
 import MenuScene from "./scenes/MenuScene";
+import PauseScene from "./scenes/PauseScene";
 
 // from: https://lospec.com/palette-list/retrocal-8
 export const COLOR_PALETTE = {
@@ -47,6 +48,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     GameScene,
     HUDScene,
     GroundScene,
+    PauseScene,
     GameOverScene,
   ],
   plugins: {},

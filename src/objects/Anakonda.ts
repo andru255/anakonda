@@ -10,6 +10,7 @@ export class AnakondaObject {
   private tailPosition = new Phaser.Math.Vector2(0, 0);
 
   public isAlive: Boolean = true;
+  public isStopped: Boolean = false;
   private updated: Boolean = true;
   private moveTime: number = 0;
   private moveDelay: number = 100;
@@ -31,7 +32,7 @@ export class AnakondaObject {
   }
 
   update(scene: Phaser.Scene, time: number) {
-    if (!this.isAlive) {
+    if (!this.isAlive || this.isStopped) {
       return false;
     }
     if (time >= this.moveTime) {
@@ -143,6 +144,14 @@ export class AnakondaObject {
     );
     part.setTintFill(COLOR_PALETTE.dark2);
     part.setDisplaySize(GRID_UNIT, GRID_UNIT);
+  }
+
+  stop() {
+    this.isStopped = true;
+  }
+
+  resume() {
+    this.isStopped = false;
   }
 
   updateGrid(grid) {

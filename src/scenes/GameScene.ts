@@ -13,6 +13,7 @@ export default class GameScene extends Phaser.Scene {
   private eatSound?: Phaser.Sound.BaseSound;
   private dieSound?: Phaser.Sound.BaseSound;
   private isEnabledDieSound: boolean = true;
+  private isMuted = false;
 
   constructor() {
     super("Game");
@@ -27,14 +28,16 @@ export default class GameScene extends Phaser.Scene {
 
     const hudScene = this.scene.get("HUD");
     const gameOverScene = this.scene.get("GameOver");
+    const pauseResumeScene = this.scene.get("Pause");
     const groundScene: GroundScene = this.scene.get("Ground") as GroundScene;
 
     this.scene
       .launch(groundScene)
       .launch(hudScene, { gameScene: this })
+      .launch(pauseResumeScene, { gameScene: this })
       .launch(gameOverScene, { gameScene: this });
     //anakonda setup
-    const ground = groundScene.addGround(0, 0);
+    groundScene.addGround(0, 0);
     groundScene.addBorders(0, 0);
     this.anakonda = groundScene.addPlayer(
       GROUND.X + GRID_UNIT * 3,
@@ -43,6 +46,28 @@ export default class GameScene extends Phaser.Scene {
     this.food = groundScene.addFood(GRID_UNIT, GRID_UNIT, "food");
     this.food.reposition(this, this.anakonda);
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.input.keyboard.on("keydown-P", () => {
+      if (this.anakonda?.isStopped) {
+        this.events.emit("resume");
+        this.anakonda?.resume();
+        return;
+      }
+      this.events.emit("paused");
+      this.anakonda?.stop();
+    });
+
+    this.input.keyboard.on("keydown-M", () => {
+      if (this.isMuted) {
+        this.isMuted = false;
+        this.game.sound.mute = false;
+        this.events.emit("unmute");
+        return;
+      }
+      this.isMuted = true;
+      this.game.sound.mute = true;
+      this.events.emit("mute");
+    });
   }
 
   update(time) {
