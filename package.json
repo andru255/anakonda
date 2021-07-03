@@ -5,7 +5,7 @@
   "scripts": {
     "parcel": "parcel",
     "start": "parcel src/index.html -p 8000",
-    "build": "parcel build src/index.html --out-dir dist",
+    "build": "parcel build src/index.html --out-dir dist/ --public-url .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
